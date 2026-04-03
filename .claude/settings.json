@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Read(//d/home-lab/**)"
+      "Read(//d/home-lab/**)",
+      "Bash(xargs grep:*)"
     ]
   }
 }
