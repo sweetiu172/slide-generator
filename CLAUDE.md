@@ -73,4 +73,4 @@ Next.js 16 + React 19 + TypeScript + Tailwind CSS 4 + pptxgenjs + Piper TTS (Pyt
 - `src/lib/pptxExporter.ts` — PowerPoint generation via pptxgenjs
 - `src/lib/textSplitter.ts` — text splitting utilities
 - `src/lib/types.ts` — shared TypeScript types
-- `piper-tts/` — Piper TTS Docker service (Dockerfile, server.py)
+- `piper-tts/` — Piper TTS Docker service (Dockerfile, server.py, download_voices.py/sh)
