@@ -1,8 +1,14 @@
 services:
   slide-generator:
     build: .
-    ports:
-      - "3001:3000"
+    container_name: slide-generator
+    restart: unless-stopped
     environment:
       - NODE_ENV=production
-    restart: unless-stopped
+    networks:
+      - frontend_net
+
+networks:
+  frontend_net:
+    external: true
+    name: gold-price-monitor_frontend_net

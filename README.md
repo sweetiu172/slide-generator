@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Slide Generator
 
-## Getting Started
+A browser-based tool for creating PowerPoint presentations. Compose slides via a form, preview them live, and export to `.pptx`.
 
-First, run the development server:
+**Live:** https://slide-generator.tuan-lnm.org (requires WARP)
+
+## Tech Stack
+
+- **Next.js 16** + React 19 + TypeScript + Tailwind CSS 4
+- **pptxgenjs** — PowerPoint file generation
+- **react-dropzone** — File upload handling
+- **jszip / file-saver** — File packaging and download
+
+## Quick Start
 
 ```bash
+# Install dependencies
+npm install
+
+# Development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build
+npm run build
+
+# Lint
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 to use the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Self-hosted on a VM behind Cloudflare Zero Trust. This app joins the [gold-price-monitor](../gold-price-monitor) `frontend_net` Docker network as an external network, where Caddy provides TLS termination with a wildcard `*.tuan-lnm.org` Let's Encrypt certificate.
 
-## Learn More
+```bash
+# 1. Ensure gold-price-monitor stack is running (creates frontend_net + Caddy)
+cd ../gold-price-monitor && docker compose up -d
 
-To learn more about Next.js, take a look at the following resources:
+# 2. Deploy slide-generator (joins frontend_net)
+cd ../slide-generator && docker compose up -d --build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The `docker-compose.yml` references `gold-price-monitor_frontend_net` as an external network. Caddy (in the gold-price-monitor stack) routes `slide-generator.tuan-lnm.org` to this container on port 3000.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+├── app/              — Next.js app router (page, layout, globals)
+├── components/
+│   ├── SlideEntryForm/   — Slide content input form
+│   ├── SlidePreview/     — Live slide preview
+│   ├── LayoutSelector/   — Slide layout picker
+│   └── ExportControls/   — Export to PPTX controls
+├── hooks/            — Custom React hooks
+└── lib/
+    ├── pptxExporter.ts   — PowerPoint generation
+    ├── textSplitter.ts   — Text splitting utilities
+    └── types.ts          — Shared TypeScript types
+```
