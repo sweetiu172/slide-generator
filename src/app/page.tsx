@@ -5,6 +5,7 @@ import SlideEntryList from "@/components/SlideEntryForm/SlideEntryList";
 import SlidePreviewGrid from "@/components/SlidePreview/SlidePreviewGrid";
 import LayoutSelector from "@/components/LayoutSelector/LayoutSelector";
 import ExportControls from "@/components/ExportControls/ExportControls";
+import Navigation from "@/components/Navigation/Navigation";
 
 export default function Home() {
   const {
@@ -27,9 +28,7 @@ export default function Home() {
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-900">
-            Slide Generator
-          </h1>
+          <Navigation />
           {isGenerated && (
             <button
               onClick={reset}

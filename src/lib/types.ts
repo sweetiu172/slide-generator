@@ -12,3 +12,17 @@ export interface GeneratedSlide {
   imageDataUrl: string | null;
   slideIndex: number;
 }
+
+export interface TTSVoice {
+  id: string;
+  name: string;
+  language: string;
+  quality: string;
+}
+
+export interface TTSSettings {
+  voice: string;
+  lengthScale: number;
+  noiseScale: number;
+  noiseW: number;
+}

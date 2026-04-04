@@ -5,8 +5,28 @@ services:
     restart: unless-stopped
     environment:
       - NODE_ENV=production
+      - PIPER_URL=http://piper-tts:5000
+    depends_on:
+      - piper-tts
     networks:
       - frontend_net
+
+  piper-tts:
+    build: ./piper-tts
+    container_name: piper-tts
+    restart: unless-stopped
+    volumes:
+      - ./piper-tts/models:/app/models
+    networks:
+      - frontend_net
+    # Uncomment for GPU acceleration (requires NVIDIA Container Toolkit):
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
 
 networks:
   frontend_net:

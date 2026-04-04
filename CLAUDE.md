@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Slide Generator — a browser-based tool for creating PowerPoint presentations. Users compose slides via a form, preview them live, and export to `.pptx`. Built with Next.js + pptxgenjs.
+Slide Generator — a browser-based tool for creating PowerPoint presentations and generating text-to-speech audio. Users compose slides via a form, preview them live, and export to `.pptx`. A separate TTS page provides ElevenLabs-style speech synthesis via self-hosted Piper TTS. Built with Next.js + pptxgenjs + Piper TTS.
 
 ## Deployment
 
@@ -50,17 +50,27 @@ cd ../slide-generator && docker compose up -d
 
 ## Tech Stack
 
-Next.js 16 + React 19 + TypeScript + Tailwind CSS 4 + pptxgenjs.
+Next.js 16 + React 19 + TypeScript + Tailwind CSS 4 + pptxgenjs + Piper TTS (Python/Flask sidecar).
 
 **Output mode:** Standalone (for Docker). Dockerfile uses multi-stage build with node:20-alpine, runs as non-root user on port 3000.
 
+**Environment variables:**
+- `PIPER_URL` — URL of the Piper TTS service (default: `http://piper-tts:5000` in Docker, `http://localhost:5000` for local dev)
+
 ## Structure
 
-- `src/app/page.tsx` — main page
+- `src/app/page.tsx` — main slide generator page
+- `src/app/tts/page.tsx` — text-to-speech page
+- `src/app/api/tts/route.ts` — TTS generation API proxy
+- `src/app/api/tts/voices/route.ts` — voice listing API proxy
+- `src/components/Navigation/` — shared nav bar (Slides / TTS)
 - `src/components/SlideEntryForm/` — slide content input form
 - `src/components/SlidePreview/` — live slide preview
 - `src/components/LayoutSelector/` — slide layout picker
 - `src/components/ExportControls/` — export to PPTX controls
+- `src/components/TextToSpeech/` — TTS UI (TextInput, VoiceSelector, VoiceSettings, GenerateButton, AudioPlayer)
+- `src/hooks/useTTS.ts` — TTS state management hook
 - `src/lib/pptxExporter.ts` — PowerPoint generation via pptxgenjs
 - `src/lib/textSplitter.ts` — text splitting utilities
 - `src/lib/types.ts` — shared TypeScript types
+- `piper-tts/` — Piper TTS Docker service (Dockerfile, server.py)

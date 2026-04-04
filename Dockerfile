@@ -1,4 +1,4 @@
-FROM node:20-alpine AS base
+FROM node:22-alpine AS base
 
 FROM base AS deps
 WORKDIR /app
@@ -22,5 +22,6 @@ COPY --from=builder /app/.next/static ./.next/static
 USER nextjs
 EXPOSE 3000
 ENV PORT=3000
+ENV PIPER_URL="http://piper-tts:5000"
 ENV HOSTNAME="0.0.0.0"
 CMD ["node", "server.js"]
