@@ -1,0 +1,8 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["server", "download_voices"]
+
+[tool.coverage.report]
+fail_under = 80
